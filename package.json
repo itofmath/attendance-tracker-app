@@ -1,0 +1,28 @@
+{
+  "name": "attendance-tracker-app",
+  "version": "1.0.0",
+  "description": "Attendance Management System - Quản lý điểm danh học sinh/nhân viên với thống kê vắng và chuyên cần theo kỳ",
+  "main": "index.html",
+  "scripts": {
+    "start": "open index.html",
+    "dev": "python -m http.server 8000"
+  },
+  "keywords": [
+    "attendance",
+    "management",
+    "điểm danh",
+    "quản lý",
+    "statistics",
+    "report"
+  ],
+  "author": "Attendance Management Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/itofmath/attendance-tracker-app.git"
+  },
+  "dependencies": {
+    "html2pdf.js": "^0.10.1",
+    "xlsx": "^0.18.5"
+  }
+}
