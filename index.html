@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ Thống Quản Lý Điểm Danh</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar">
+            <h1>📋 Quản Lý Điểm Danh</h1>
+            <ul class="nav-menu">
+                <li><a href="#" onclick="showTab('dashboard')">Trang Chủ</a></li>
+                <li><a href="#" onclick="showTab('attendance')">Điểm Danh</a></li>
+                <li><a href="#" onclick="showTab('students')">Học Sinh</a></li>
+                <li><a href="#" onclick="showTab('statistics')">Thống Kê</a></li>
+                <li><a href="#" onclick="showTab('reports')">Báo Cáo</a></li>
+            </ul>
+        </nav>
+
+        <!-- Dashboard Tab -->
+        <div id="dashboard" class="tab-content active">
+            <h2>Trang Chủ</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Tổng Học Sinh</h3>
+                    <p class="stat-number" id="totalStudents">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Hôm Nay Có Mặt</h3>
+                    <p class="stat-number" id="presentToday">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Hôm Nay Vắng</h3>
+                    <p class="stat-number" id="absentToday">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Kỳ Này Chuyên Cần</h3>
+                    <p class="stat-number" id="diligent">0</p>
+                </div>
+            </div>
+            <div class="info-section">
+                <h3>Hướng Dẫn Sử Dụng</h3>
+                <ul>
+                    <li>Thêm học sinh/nhân viên trong tab "Học Sinh"</li>
+                    <li>Điểm danh hàng ngày trong tab "Điểm Danh"</li>
+                    <li>Xem thống kê theo kỳ học trong tab "Thống Kê"</li>
+                    <li>Xuất báo cáo PDF trong tab "Báo Cáo"</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Students Management Tab -->
+        <div id="students" class="tab-content">
+            <h2>Quản Lý Học Sinh / Nhân Viên</h2>
+            <div class="form-group">
+                <input type="text" id="studentName" placeholder="Tên học sinh/nhân viên">
+                <input type="text" id="studentId" placeholder="Mã số">
+                <select id="studentClass">
+                    <option value="">--Chọn Lớp--</option>
+                    <option value="10A1">10A1</option>
+                    <option value="10A2">10A2</option>
+                    <option value="10B1">10B1</option>
+                    <option value="11A1">11A1</option>
+                </select>
+                <button onclick="addStudent()">Thêm</button>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Mã Số</th>
+                        <th>Tên</th>
+                        <th>Lớp</th>
+                        <th>Hành Động</th>
+                    </tr>
+                </thead>
+                <tbody id="studentsList">
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Attendance Tab -->
+        <div id="attendance" class="tab-content">
+            <h2>Điểm Danh Hôm Nay</h2>
+            <div class="form-group">
+                <label>Ngày: <input type="date" id="attendanceDate"></label>
+                <select id="attendanceClass">
+                    <option value="">--Chọn Lớp--</option>
+                    <option value="10A1">10A1</option>
+                    <option value="10A2">10A2</option>
+                    <option value="10B1">10B1</option>
+                    <option value="11A1">11A1</option>
+                </select>
+                <button onclick="filterAttendanceByClass()">Lọc</button>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Mã Số</th>
+                        <th>Tên</th>
+                        <th>Có Mặt</th>
+                        <th>Vắng</th>
+                        <th>Muộn</th>
+                        <th>Ghi Chú</th>
+                        <th>Lưu</th>
+                    </tr>
+                </thead>
+                <tbody id="attendanceList">
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Statistics Tab -->
+        <div id="statistics" class="tab-content">
+            <h2>Thống Kê Theo Kỳ</h2>
+            <div class="form-group">
+                <select id="statsTermSelect">
+                    <option value="1">Kỳ 1</option>
+                    <option value="2">Kỳ 2</option>
+                </select>
+                <select id="statsClassSelect">
+                    <option value="">--Tất Cả Lớp--</option>
+                    <option value="10A1">10A1</option>
+                    <option value="10A2">10A2</option>
+                    <option value="10B1">10B1</option>
+                    <option value="11A1">11A1</option>
+                </select>
+                <button onclick="loadStatistics()">Tải Thống Kê</button>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Mã Số</th>
+                        <th>Tên</th>
+                        <th>Lớp</th>
+                        <th>Có Mặt</th>
+                        <th>Vắng</th>
+                        <th>Muộn</th>
+                        <th>Chuyên Cần (%)</th>
+                    </tr>
+                </thead>
+                <tbody id="statisticsTable">
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Reports Tab -->
+        <div id="reports" class="tab-content">
+            <h2>Xuất Báo Cáo</h2>
+            <div class="form-group">
+                <select id="reportTermSelect">
+                    <option value="1">Kỳ 1</option>
+                    <option value="2">Kỳ 2</option>
+                </select>
+                <select id="reportClassSelect">
+                    <option value="">--Tất Cả Lớp--</option>
+                    <option value="10A1">10A1</option>
+                    <option value="10A2">10A2</option>
+                    <option value="10B1">10B1</option>
+                    <option value="11A1">11A1</option>
+                </select>
+                <button onclick="exportPDF()">📥 Xuất PDF</button>
+                <button onclick="exportExcel()">📊 Xuất Excel</button>
+            </div>
+            <div id="reportPreview" class="report-preview">
+                <h3>Xem Trước Báo Cáo</h3>
+                <table class="table" id="reportTable">
+                    <thead>
+                        <tr>
+                            <th>Mã Số</th>
+                            <th>Tên</th>
+                            <th>Lớp</th>
+                            <th>Có Mặt</th>
+                            <th>Vắng</th>
+                            <th>Muộn</th>
+                            <th>Chuyên Cần (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reportTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
